@@ -1,0 +1,56 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: kenini1805/laravel-workspace
+      - image: mysql:5.7
+        environment:
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_DATABASE: homestead
+          MYSQL_USER: homestead
+          MYSQL_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: root
+    steps:
+      - checkout
+      - run: cp .env.example .env
+      - restore_cache:
+          keys:
+            - vendor-v1-{{ checksum "composer.lock" }}
+      - run: composer install
+      - save_cache:
+          key: endor-v1-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
+      # run test
+      - run: php artisan key:generate
+      - run: framgia-ci run --local
+      - run: framgia-ci test-connect 127.0.0.1 3306 60
+      - run: php artisan migrate
+      # Send notification to chatwork
+      - run:
+          name: Sending notification
+          when: on_fail
+          command: |
+            if [[ true ]];  then
+              curl -X POST -H "X-ChatWorkToken: $CHATWORK_TOKEN" -d \
+                "body=TO ALL>>>>
+            [info][title]Build $CIRCLE_BUILD_NUM - FAIL[/title]Repo: $CIRCLE_PROJECT_REPONAME
+            Author: $CIRCLE_USERNAME
+            Branch: $CIRCLE_BRANCH
+            Build link: https://circleci.com/gh/nguyenhuuhai98/deploy-with-ci-cd/$CIRCLE_BUILD_NUM[/info]" \
+                "https://api.chatwork.com/v2/rooms/$CHATWORK_ROOM/messages"
+            fi
+      - run:
+          name: Sending notification
+          when: on_success
+          command: |
+            if [[ true ]];  then
+              curl -X POST -H "X-ChatWorkToken: $CHATWORK_TOKEN" -d \
+                "body=TO ALL>>>>
+            [info][title]Build $CIRCLE_BUILD_NUM - SUCCESS[/title]Repo: $CIRCLE_PROJECT_REPONAME
+            Author: $CIRCLE_USERNAME
+            Branch: $CIRCLE_BRANCH
+            COMMIT/PULL REQUEST LINK: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
+            Build link: https://circleci.com/gh/nguyenhuuhai98/deploy-with-ci-cd/$CIRCLE_BUILD_NUM[/info]" \
+                "https://api.chatwork.com/v2/rooms/$CHATWORK_ROOM/messages"
+            fi
