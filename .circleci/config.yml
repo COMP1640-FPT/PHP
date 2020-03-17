@@ -5,9 +5,9 @@ jobs:
       - image: kenini1805/laravel-workspace
       - image: mysql:5.7
         environment:
-          MYSQL_HOST: 127.0.0.1
-          MYSQL_DATABASE: homestead
-          MYSQL_USER: homestead
+          MYSQL_HOST: comp1640php_mysql_test
+          MYSQL_DATABASE: comp1640php_test
+          MYSQL_USER: root
           MYSQL_PASSWORD: secret
           MYSQL_ROOT_PASSWORD: root
     steps:
@@ -22,10 +22,11 @@ jobs:
           paths:
             - vendor
       # run test
+      - run: composer install
+      - run: cp .env.testing .env
       - run: php artisan key:generate
       - run: framgia-ci run --local
-      - run: framgia-ci test-connect 127.0.0.1 3306 60
-      - run: php artisan migrate
+      - run: framgia-ci test-connect comp1640php_mysql_test 3306 60
       # Send notification to chatwork
       - run:
           name: Sending notification
@@ -37,7 +38,7 @@ jobs:
             [info][title]Build $CIRCLE_BUILD_NUM - FAIL[/title]Repo: $CIRCLE_PROJECT_REPONAME
             Author: $CIRCLE_USERNAME
             Branch: $CIRCLE_BRANCH
-            Build link: https://circleci.com/gh/nguyenhuuhai98/deploy-with-ci-cd/$CIRCLE_BUILD_NUM[/info]" \
+            Build link: https://circleci.com/gh/COMP1640-FPT/PHP/$CIRCLE_BUILD_NUM[/info]" \
                 "https://api.chatwork.com/v2/rooms/$CHATWORK_ROOM/messages"
             fi
       - run:
@@ -51,6 +52,6 @@ jobs:
             Author: $CIRCLE_USERNAME
             Branch: $CIRCLE_BRANCH
             COMMIT/PULL REQUEST LINK: https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1
-            Build link: https://circleci.com/gh/nguyenhuuhai98/deploy-with-ci-cd/$CIRCLE_BUILD_NUM[/info]" \
+            Build link: https://circleci.com/gh/COMP1640-FPT/PHP/$CIRCLE_BUILD_NUM[/info]" \
                 "https://api.chatwork.com/v2/rooms/$CHATWORK_ROOM/messages"
             fi
