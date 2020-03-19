@@ -17,12 +17,12 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password')->default(encode('Aa@123456'));
+            $table->string('password')->default(bcrypt('Aa@123456'));
             $table->string('status')->default('Not Actived');
             $table->string('role')->default('Student');
             $table->string('phone');
             $table->string('country')->nullable();
-            $table->string('state')->nullable();
+            $table->string('address')->nullable();
             $table->string('avatar')->nullable();
             $table->dateTime('birthday')->nullable();
             $table->string('code');

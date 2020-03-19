@@ -16,3 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('user', 'UserController', ['except' => ['show', 'create']]);
+Route::post('user/{role}', 'UserController@handleRoleChange')->name('user.handle.role');
+Route::get('ping', function() {
+    return response()->json([
+        'results' => null,
+        'success' => true,
+        'message' => 'Ping!',
+    ]);
+});
