@@ -14,6 +14,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'code',
+        'role',
+        'country',
+        'address',
+        'gender',
+        'phone',
+        'birthday',
     ];
 
     public function major()
