@@ -12,8 +12,8 @@ class UserRepository extends EloquentRepository implements UserRepositoryInterfa
         return User::class;
     }
 
-    public function getLastUserByRole($role)
+    public function getUserByRole($role)
     {
-        return $this->model->where('role', $role)->first();
+        return $this->model->where('role', $role)->orderBy('id', 'DESC')->get();
     }
 }
