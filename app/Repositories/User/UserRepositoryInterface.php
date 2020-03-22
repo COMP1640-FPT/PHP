@@ -5,5 +5,5 @@ interface UserRepositoryInterface
 {
     public function getModel();
 
-    public function getLastUserByRole($role);
+    public function getUserByRole($role);
 }

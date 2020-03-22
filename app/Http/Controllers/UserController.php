@@ -151,14 +151,35 @@ class UserController extends Controller
                     'GBH',
                     'GDH',
                 ];
-                $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getLastUserByRole($role)->code);
+                $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
                 $results['code'] = $matches + 1;
             } else {
-                $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getLastUserByRole($role)->code);
+                $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
             }
 
             return response()->json([
                 'results' => $results,
+                'success' => true,
+                'message' => 'Return code successfully',
+            ]);
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
+    }
+
+    public function getTutors()
+    {
+        try {
+            $users = $this->userRepository->getUserByRole('tutor');
+
+            return response()->json([
+                'results' => $users,
                 'success' => true,
                 'message' => 'Return code successfully',
             ]);
