@@ -40,7 +40,7 @@ class UserController extends Controller
     {
         try {
             $handleUser = $this->handleRequest($request);
-            $user = User::create($handleUser);
+            $user = $this->userRepository->create($handleUser);
 
             return response()->json([
                 'result' => $user,
