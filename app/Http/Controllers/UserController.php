@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Repositories\Major\MajorRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
@@ -150,15 +149,24 @@ class UserController extends Controller
     {
         try {
             $results = [];
-            if ($role == 'student') {
-                $results['preCode'] = $this->majorRepository->getMajorCode()->toArray();
-                $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
-                $results['code'] = ($matches + 1);
-            } else {
-                $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
-                $results['code'] = ($matches + 1);
+            switch ($role) {
+                case 'student':
+                    $results['preCode'] = $this->majorRepository->getMajorCode()->toArray();
+                    $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
+                    $results['code'] = ($matches + 1);
+                    break;
+                case 'tutor':
+                    $results['preCode'] = 'TUT';
+                    $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
+                    $results['code'] = ($matches + 1);
+                    break;
+                case 'staff':
+                    $results['preCode'] = 'STF';
+                    $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
+                    $results['code'] = ($matches + 1);
+                    break;
             }
-
+            dd($results);
             return response()->json([
                 'results' => $results,
                 'success' => true,
