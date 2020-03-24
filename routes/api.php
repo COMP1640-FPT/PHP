@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::prefix('handleRequest')->group(function () {
-    Route::post('user/{role}', 'UserController@handleRoleChange')->name('handle.roleChange');
+    Route::get('user/{role}', 'UserController@handleRoleChange')->name('handle.roleChange');
     Route::get('tutors', 'UserController@getTutors')->name('handle.getTutors');
 });
 Route::resource('user', 'UserController', ['except' => ['show', 'create']]);
