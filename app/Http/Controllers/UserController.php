@@ -3,16 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Repositories\Major\MajorRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     protected $userRepository;
+    protected $majorRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        MajorRepositoryInterface $majorRepository
+    ) {
         $this->userRepository = $userRepository;
+        $this->majorRepository = $majorRepository;
     }
 
     public function index()
@@ -146,15 +151,12 @@ class UserController extends Controller
         try {
             $results = [];
             if ($role == 'student') {
-                $results['preCode'] = [
-                    'GCH',
-                    'GBH',
-                    'GDH',
-                ];
+                $results['preCode'] = $this->majorRepository->getMajorCode()->toArray();
                 $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
-                $results['code'] = $matches + 1;
+                $results['code'] = ($matches + 1);
             } else {
                 $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
+                $results['code'] = ($matches + 1);
             }
 
             return response()->json([
