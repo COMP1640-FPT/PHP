@@ -28,3 +28,6 @@ Route::name('ping')->get('ping', function() {
         'message' => 'Ping!',
     ]);
 });
+
+
+Route::resource('major', 'MajorController', ['except' => ['create']]);
