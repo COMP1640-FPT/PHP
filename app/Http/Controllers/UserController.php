@@ -85,7 +85,11 @@ class UserController extends Controller
             $handleUser = $this->handleRequest($request);
             $user = $this->userRepository->update($id, $handleUser);
 
-            return response()->json($user);
+            return response()->json([
+                'results' => $user,
+                'success' => true,
+                'message' => 'Update user successfully!',
+            ]);
         } catch (\Exception $ex) {
             report($ex);
 
