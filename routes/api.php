@@ -21,6 +21,7 @@ Route::prefix('handleRequest')->group(function () {
     Route::get('tutors', 'UserController@getTutors')->name('handle.getTutors');
 });
 Route::resource('user', 'UserController', ['except' => ['show', 'create']]);
+Route::resource('subject', 'SubjectController', ['except' => ['show', 'create']]);
 Route::name('ping')->get('ping', function() {
     return response()->json([
         'results' => null,
