@@ -170,7 +170,6 @@ class UserController extends Controller
                     $results['code'] = ($matches + 1);
                     break;
             }
-
             return response()->json([
                 'results' => $results,
                 'success' => true,
