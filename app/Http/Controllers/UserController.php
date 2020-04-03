@@ -160,12 +160,12 @@ class UserController extends Controller
                     $results['code'] = ($matches + 1);
                     break;
                 case 'tutor':
-                    $results['preCode'] = 'TUT';
+                    $results['preCode'] = ['TUT'];
                     $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
                     $results['code'] = ($matches + 1);
                     break;
                 case 'staff':
-                    $results['preCode'] = 'STF';
+                    $results['preCode'] = ['STF'];
                     $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
                     $results['code'] = ($matches + 1);
                     break;
