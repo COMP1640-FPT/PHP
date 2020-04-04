@@ -146,6 +146,7 @@ class UserController extends Controller
             'phone' => $request->phone,
             'birthday' => $request->birthday,
             'email' => $header . $code . '@etutor.com',
+            'avatar' => $request->avatar,
         ];
     }
 
