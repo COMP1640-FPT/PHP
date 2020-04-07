@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\Major\MajorRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -15,6 +16,7 @@ class UserController extends Controller
         UserRepositoryInterface $userRepository,
         MajorRepositoryInterface $majorRepository
     ) {
+        $this->middleware('auth:api', ['except' => ['login']]);
         $this->userRepository = $userRepository;
         $this->majorRepository = $majorRepository;
     }
@@ -206,5 +208,10 @@ class UserController extends Controller
                 'message' => $ex,
             ]);
         }
+    }
+
+    public function guard()
+    {
+        return Auth::guard();
     }
 }

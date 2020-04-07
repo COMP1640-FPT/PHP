@@ -13,15 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::prefix('handleRequest')->group(function () {
-    Route::get('user/{role}', 'UserController@handleRoleChange')->name('handle.roleChange');
-    Route::get('tutors', 'UserController@getTutors')->name('handle.getTutors');
-});
-Route::resource('user', 'UserController', ['except' => ['show', 'create']]);
-Route::resource('subject', 'SubjectController', ['except' => ['show', 'create']]);
 Route::name('ping')->get('ping', function() {
     return response()->json([
         'results' => null,
@@ -29,6 +20,14 @@ Route::name('ping')->get('ping', function() {
         'message' => 'Ping!',
     ]);
 });
+Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('me', 'AuthController@me');
+    Route::prefix('handleRequest')->group(function () {
+        Route::get('user/{role}', 'UserController@handleRoleChange')->name('handle.roleChange');
+        Route::get('tutors', 'UserController@getTutors')->name('handle.getTutors');
+    });
+    Route::resource('user', 'UserController', ['except' => ['show', 'create']]);
+});
 
-
-Route::resource('major', 'MajorController', ['except' => ['create','edit']]);
