@@ -131,12 +131,7 @@ class UserController extends Controller
         foreach ($firstName as $word) {
             $header .= substr($word, 0, 1);
         }
-
-        if ($request->role === 'student') {
-            $code = $request->preCode . $request->code;
-        } else {
-            $code = $request->code;
-        }
+        $code = $request->preCode . $request->code;
 
         return [
             'name' => $request->lastName . ' ' . $request->firstName,
