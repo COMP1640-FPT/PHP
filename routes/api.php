@@ -31,5 +31,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::resource('user', 'UserController', ['except' => ['show', 'create']]);
     Route::get('change_status/{id}', 'UserController@changeStatusOfUser')->name('change.status.of.user');
     Route::get('user/{code}', 'UserController@getUserByCode')->name('get.user.by.code');
+    Route::post('assign', 'LearningController@assignStudentsForTutor')->name('assign.students.for.tutor');
 });
 
