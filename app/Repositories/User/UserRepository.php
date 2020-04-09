@@ -16,4 +16,9 @@ class UserRepository extends EloquentRepository implements UserRepositoryInterfa
     {
         return $this->model->where('role', $role)->orderBy('id', 'DESC')->get();
     }
+
+    public function getUserByCode($code)
+    {
+        return $this->model->where('code', $code)->get();
+    }
 }

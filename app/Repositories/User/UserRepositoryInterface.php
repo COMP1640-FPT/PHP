@@ -6,4 +6,6 @@ interface UserRepositoryInterface
     public function getModel();
 
     public function getUserByRole($role);
+
+    public function getUserByCode($code);
 }

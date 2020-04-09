@@ -42,7 +42,21 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json($this->guard()->user());
+        try {
+            return response()->json([
+                'results' => $this->guard()->user(),
+                'success' => true,
+                'message' => 'Return information successfully!',
+            ]);
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Major\MajorRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,15 +9,16 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     protected $userRepository;
-    protected $majorRepository;
 
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        MajorRepositoryInterface $majorRepository
-    ) {
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
         $this->middleware('auth:api', ['except' => ['login']]);
         $this->userRepository = $userRepository;
-        $this->majorRepository = $majorRepository;
+    }
+
+    public function guard()
+    {
+        return Auth::guard();
     }
 
     public function index()
@@ -147,7 +147,7 @@ class UserController extends Controller
         ];
     }
 
-    public function handleRoleChange($role)
+    public function getCodeByRole($role)
     {
         try {
             $results = [];
@@ -184,15 +184,15 @@ class UserController extends Controller
         }
     }
 
-    public function getTutors()
+    public function getUsersByRole($role)
     {
         try {
-            $users = $this->userRepository->getUserByRole('tutor');
+            $users = $this->userRepository->getUserByRole($role);
 
             return response()->json([
                 'results' => $users,
                 'success' => true,
-                'message' => 'Return code successfully',
+                'message' => 'Get all users by role successfully',
             ]);
         } catch (\Exception $ex) {
             report($ex);
@@ -205,8 +205,49 @@ class UserController extends Controller
         }
     }
 
-    public function guard()
+    public function changeStatusOfUser($id)
     {
-        return Auth::guard();
+        try {
+            $user = $this->userRepository->find($id);
+            if ($user->status === 'Not Actived') {
+                $user->status = 'Actived';
+            } elseif ($user->status === 'Actived') {
+                $user->status = 'Deactived';
+            } elseif ($user->status === 'Deactived') {
+                $user->status = 'Not Actived';
+            }
+            $user->save();
+
+            return response()->json([
+                'results' => $user->status,
+                'success' => true,
+                'message' => 'Change status successfully',
+            ]);
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
+    }
+
+    public function getUserByCode($code)
+    {
+        try {
+            $user = $this->userRepository->getUserByCode($code);
+
+            return response()->json([
+                'results' => $user,
+                'success' => true,
+                'message' => 'Return user successfully!',
+            ]);
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return $ex;
+        }
     }
 }
