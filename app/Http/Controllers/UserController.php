@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -124,6 +125,46 @@ class UserController extends Controller
         }
     }
 
+    public function changePassword(Request $request)
+    {
+        try {
+            $user = $this->guard()->user();
+
+            if ($user->password == $request->oldPassword) {
+                if ($request->newPassword = $request->rePassword) {
+                    $user->password = $request->password;
+                    $user->save();
+
+                    return response()->json([
+                        'results' => $user,
+                        'success' => true,
+                        'message' => 'Update password successfully!',
+                    ]);
+                } else {
+                    return response()->json([
+                        'results' => null,
+                        'success' => false,
+                        'message' => 'Re-enter password not correct',
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'results' => null,
+                    'success' => false,
+                    'message' => 'Old password enter not correct',
+                ]);
+            }
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
+    }
+
     public function handleRequest($request)
     {
         $firstName = explode(' ', $request->firstName);
@@ -168,6 +209,7 @@ class UserController extends Controller
                     $results['code'] = ($matches + 1);
                     break;
             }
+
             return response()->json([
                 'results' => $results,
                 'success' => true,
