@@ -8,15 +8,15 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            "name" => "User Admin",
-            "code" => "AD10001",
+            "name" => "User Authorized Staff",
+            "code" => "AS10001",
             "role" => "admin",
             "country" => "Vietnam",
             "address" => "PC",
             "gender" => "1",
             "phone" => "0123456789",
             "birthday" => "2020-03-24",
-            "email" => "admin@etutor.com",
+            "email" => "astaff@etutor.com",
             "updated_at" => Carbon::now(),
             "created_at" => Carbon::now(),
         ]);
