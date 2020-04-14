@@ -8,4 +8,8 @@ interface UserRepositoryInterface
     public function getUserByRole($role);
 
     public function getUserByCode($code);
+
+    public function getStudentByTutor($id);
+
+    public function getTutorByStudent($id);
 }

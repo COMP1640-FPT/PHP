@@ -21,4 +21,14 @@ class UserRepository extends EloquentRepository implements UserRepositoryInterfa
     {
         return $this->model->where('code', $code)->get();
     }
+
+    public function getStudentByTutor($id)
+    {
+        return $this->model->where('id', $id)->with('students')->first();
+    }
+
+    public function getTutorByStudent($id)
+    {
+        return $this->model->where('id', $id)->with('tutors')->first();
+    }
 }
