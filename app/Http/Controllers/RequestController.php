@@ -78,24 +78,21 @@ class RequestController extends Controller
         }
     }
 
-    public function changeRequestStatus($id)
+    public function getRequestsByStatus($id, Request $request)
     {
         try {
-            $request = $this->requestRepository->find($id);
-            if ($request->status === 'Not Resolve') {
-                $request->status = 'Resolved';
-                $request->save();
-
+            $data = $this->requestRepository->find($id);
+            if ($data->status == $request->newStatus) {
                 return response()->json([
-                    'results' => $request,
+                    'results' => $data,
                     'success' => true,
-                    'message' => 'Change Status of Request successfully!',
+                    'message' => 'Get Request successfully',
                 ]);
             } else {
                 return response()->json([
                     'results' => null,
                     'success' => true,
-                    'message' => 'Can not change status of this Request!',
+                    'message' => 'Status is not corected',
                 ]);
             }
         } catch (\Exception $ex) {
