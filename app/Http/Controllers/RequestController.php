@@ -2,11 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Request\RequestRepositoryInterface;
+use Faker\Factory;
 use Illuminate\Http\Request;
 use App\Models\User;
 
 class RequestController extends Controller
 {
+    protected $requestRepository;
+
+    public function __construct(RequestRepositoryInterface $requestRepository)
+    {
+        $this->requestRepository = $requestRepository;
+    }
+
+    public function createRequest(Request $request)
+    {
+        try {
+            $data = [
+                'student_id' => $request->student_id,
+                'tutor_id' => $request->tutor_id,
+                'type' => $request->type,
+                'title' => $request->title,
+                'description' => $request->description,
+                'room' => md5(rand()),
+            ];
+            $request = $this->requestRepository->create($data);
+
+            return response()->json([
+                'results' => $request,
+                'success' => true,
+                'message' => 'Created Request successfully',
+            ]);
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
+    }
+
     public function getRequestsByStudent($id)
     {
         try {
