@@ -36,4 +36,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::get('tutor/{id}', 'LearningController@getStudentsByTutor')->name('get.students.by.tutor');
     Route::get('student/{id}', 'LearningController@getTutorByStudent')->name('get.tutor.by.student');
     Route::get('student-requests/{student}', 'RequestController@getRequestsByStudent')->name('get.requests.by.student');
+    Route::get('student-not-assign', 'LearningController@getStudentsNotAssigned')->name('get.students.not.assign');
 });
+
