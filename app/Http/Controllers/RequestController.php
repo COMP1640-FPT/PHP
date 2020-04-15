@@ -77,4 +77,35 @@ class RequestController extends Controller
             ]);
         }
     }
+
+    public function changeRequestStatus($id)
+    {
+        try {
+            $request = $this->requestRepository->find($id);
+            if ($request->status === 'Not Resolve') {
+                $request->status = 'Resolved';
+                $request->save();
+
+                return response()->json([
+                    'results' => $request,
+                    'success' => true,
+                    'message' => 'Change Status of Request successfully!',
+                ]);
+            } else {
+                return response()->json([
+                    'results' => null,
+                    'success' => true,
+                    'message' => 'Can not change status of this Request!',
+                ]);
+            }
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
+    }
 }

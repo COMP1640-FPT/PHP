@@ -38,5 +38,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::get('student-requests/{student}', 'RequestController@getRequestsByStudent')->name('get.requests.by.student');
     Route::get('student-not-assign', 'LearningController@getStudentsNotAssigned')->name('get.students.not.assign');
     Route::post('create-request', 'RequestController@createRequest')->name('create.request');
+    Route::get('change-request-status/{request}', 'RequestController@changeRequestStatus')->name('change.status.of.request');
 });
 
