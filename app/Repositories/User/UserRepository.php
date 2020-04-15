@@ -31,4 +31,9 @@ class UserRepository extends EloquentRepository implements UserRepositoryInterfa
     {
         return $this->model->where('id', $id)->with('tutors')->first();
     }
+
+    public function getStudentsNotAssigned($id)
+    {
+        return $this->model->where('role', 'student')->whereNotIn('id', $id)->get();
+    }
 }

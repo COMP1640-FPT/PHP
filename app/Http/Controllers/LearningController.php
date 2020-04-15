@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StudentTutor;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -86,6 +87,28 @@ class LearningController extends Controller
                     'message' => 'This User is not Student',
                 ]);
             }
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
+    }
+
+    public function getStudentsNotAssigned()
+    {
+        try {
+            $studentId = StudentTutor::pluck('student_id');
+            $students = $this->userRepository->getStudentsNotAssigned($studentId);
+
+            return response()->json([
+                'results' => $students,
+                'success' => true,
+                'message' => 'Get all students not assigned successfully!',
+            ]);
         } catch (\Exception $ex) {
             report($ex);
 
