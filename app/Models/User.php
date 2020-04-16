@@ -47,16 +47,6 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function major()
-    {
-        return $this->belongsTo(Major::class);
-    }
-
-    public function classes()
-    {
-        return $this->belongsToMany(Klass::class, 'class_user');
-    }
-
     public function tutors()
     {
         return $this->belongsToMany($this, 'student_tutor', 'student_id', 'tutor_id');
@@ -70,12 +60,18 @@ class User extends Authenticatable implements JWTSubject
     public function rTutors()
     {
         return $this->belongsToMany($this, 'requests', 'student_id', 'tutor_id')
-        ->withPivot('title', 'rates', 'type', 'status');
+            ->withPivot('title', 'rates', 'type', 'status');
     }
 
     public function rStudents()
     {
         return $this->belongsToMany($this, 'requests', 'tutor_id', 'student_id')
-        ->withPivot('title', 'rates', 'type', 'status');
+            ->withPivot('title', 'rates', 'type', 'status');
+    }
+
+    public function requests()
+    {
+        return $this->belongsToMany(Request::class, 'messages', 'request_id', 'sender_id')
+            ->withPivot('request_id', 'sender_id', 'content', 'file');
     }
 }
