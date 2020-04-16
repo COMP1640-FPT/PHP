@@ -108,4 +108,32 @@ class RequestController extends Controller
             ]);
         }
     }
+
+    public function getRequestById($id)
+    {
+        try {
+            $request = $this->requestRepository->find($id);
+            if ($request) {
+                return response()->json([
+                    'results' => $request,
+                    'success' => true,
+                    'message' => 'Get Request successfully!',
+                ]);
+            } else {
+                return response()->json([
+                    'results' => null,
+                    'success' => true,
+                    'message' => 'This request not exist!',
+                ]);
+            }
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
+    }
 }
