@@ -108,4 +108,32 @@ class RequestController extends Controller
             ]);
         }
     }
+
+    public function getRequestsByStatus($id, Request $request)
+    {
+        try {
+            $data = $this->requestRepository->find($id);
+            if ($data->status == $request->newStatus) {
+                return response()->json([
+                    'results' => $data,
+                    'success' => true,
+                    'message' => 'Get Request successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'results' => null,
+                    'success' => true,
+                    'message' => 'Status is not corect',
+                ]);
+            }
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
+    }
 }
