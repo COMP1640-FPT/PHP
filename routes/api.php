@@ -42,5 +42,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::get('request/{request}', 'RequestController@getRequestById')->name('get.request.by.id');
     Route::get('tutor-requests/{tutor}', 'RequestController@getRequestsByTutor')->name('get.requests.by.tutor');
     Route::post('store-message', 'MessageController@storeMessage')->name('store.message');
+    Route::get('request-messages/{request}', 'MessageController@getMessagesByRequest')->name('get.messages.by.request');
 });
 
