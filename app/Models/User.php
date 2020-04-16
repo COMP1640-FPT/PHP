@@ -70,12 +70,12 @@ class User extends Authenticatable implements JWTSubject
     public function rTutors()
     {
         return $this->belongsToMany($this, 'requests', 'student_id', 'tutor_id')
-        ->withPivot('name', 'rates', 'type', 'status');
+        ->withPivot('title', 'rates', 'type', 'status');
     }
 
     public function rStudents()
     {
         return $this->belongsToMany($this, 'requests', 'tutor_id', 'student_id')
-        ->withPivot('name', 'rates', 'type', 'status');
+        ->withPivot('title', 'rates', 'type', 'status');
     }
 }
