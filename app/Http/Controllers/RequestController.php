@@ -213,4 +213,25 @@ class RequestController extends Controller
             ]);
         }
     }
+
+    public function getRequestsByStatus($status)
+    {
+        try {
+            $requests = $this->requestRepository->getRequestsByStatus($status);
+
+            return response()->json([
+                'results' => $requests,
+                'success' => true,
+                'message' => 'Get Request successfully',
+            ]);
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
+    }
 }

@@ -11,4 +11,9 @@ class RequestRepository extends EloquentRepository implements RequestRepositoryI
     {
         return Request::class;
     }
+
+    public function getRequestsByStatus($status)
+    {
+        return $this->model->where('status', $status)->get();
+    }
 }
