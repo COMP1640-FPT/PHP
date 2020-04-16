@@ -41,4 +41,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::get('change-request-status/{request}', 'RequestController@changeRequestStatus')->name('change.status.of.request');
     Route::get('request/{request}', 'RequestController@getRequestById')->name('get.request.by.id');
     Route::get('tutor-requests/{tutor}', 'RequestController@getRequestsByTutor')->name('get.requests.by.tutor');
+    Route::post('store-message', 'MessageController@storeMessage')->name('store.message');
 });
+
