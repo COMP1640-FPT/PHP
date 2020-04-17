@@ -37,14 +37,14 @@ class MessageController extends Controller
                 } else {
                     return response()->json([
                         'results' => null,
-                        'success' => true,
+                        'success' => false,
                         'message' => 'Sender not authorized in this request!',
                     ]);
                 }
             } else {
                 return response()->json([
                     'results' => null,
-                    'success' => true,
+                    'success' => false,
                     'message' => 'This request not exist!',
                 ]);
             }
@@ -88,14 +88,14 @@ class MessageController extends Controller
                 } else {
                     return response()->json([
                         'results' => null,
-                        'success' => true,
+                        'success' => false,
                         'message' => 'Let start!',
                     ]);
                 }
             } else {
                 return response()->json([
                     'results' => null,
-                    'success' => true,
+                    'success' => false,
                     'message' => 'This request not exist!',
                 ]);
             }

@@ -48,12 +48,12 @@ class LearningController extends Controller
                 return response()->json([
                     'results' => $students,
                     'success' => true,
-                    'message' => 'Get student successfully',
+                    'message' => 'Get Students successfully',
                 ]);
             } else {
                 return response()->json([
                     'results' => null,
-                    'success' => true,
+                    'success' => false,
                     'message' => 'This User is not Tutor',
                 ]);
             }
@@ -78,13 +78,13 @@ class LearningController extends Controller
                 return response()->json([
                     'results' => $tutor,
                     'success' => true,
-                    'message' => 'Get student successfully',
+                    'message' => 'Get Tutor successfully',
                 ]);
             } else {
                 return response()->json([
                     'results' => null,
-                    'success' => true,
-                    'message' => 'This User is not Student',
+                    'success' => false,
+                    'message' => 'This User is not Tutor',
                 ]);
             }
         } catch (\Exception $ex) {
@@ -107,7 +107,7 @@ class LearningController extends Controller
             return response()->json([
                 'results' => $students,
                 'success' => true,
-                'message' => 'Get all students not assigned successfully!',
+                'message' => 'Get all Students not assigned successfully!',
             ]);
         } catch (\Exception $ex) {
             report($ex);

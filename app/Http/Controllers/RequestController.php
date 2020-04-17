@@ -69,21 +69,21 @@ class RequestController extends Controller
                     } else {
                         return response()->json([
                             'results' => null,
-                            'success' => true,
+                            'success' => false,
                             'message' => 'This Student has not any Requests!',
                         ]);
                     }
                 } else {
                     return response()->json([
                         'results' => null,
-                        'success' => true,
+                        'success' => false,
                         'message' => 'This User is not Student!',
                     ]);
                 }
             } else {
                 return response()->json([
                     'results' => null,
-                    'success' => true,
+                    'success' => false,
                     'message' => 'This User not exist!',
                 ]);
             }
@@ -115,14 +115,14 @@ class RequestController extends Controller
                 } else {
                     return response()->json([
                         'results' => null,
-                        'success' => true,
+                        'success' => false,
                         'message' => 'Can not change status of this Request!',
                     ]);
                 }
             } else {
                 return response()->json([
                     'results' => null,
-                    'success' => true,
+                    'success' => false,
                     'message' => 'This Request not exist!',
                 ]);
             }
@@ -150,7 +150,7 @@ class RequestController extends Controller
             } else {
                 return response()->json([
                     'results' => null,
-                    'success' => true,
+                    'success' => false,
                     'message' => 'This request not exist!',
                 ]);
             }
@@ -185,21 +185,21 @@ class RequestController extends Controller
                     } else {
                         return response()->json([
                             'results' => null,
-                            'success' => true,
+                            'success' => false,
                             'message' => 'This Tutor has not any requests!',
                         ]);
                     }
                 } else {
                     return response()->json([
                         'results' => null,
-                        'success' => true,
+                        'success' => false,
                         'message' => 'This User is not Tutor!',
                     ]);
                 }
             } else {
                 return response()->json([
                     'results' => null,
-                    'success' => true,
+                    'success' => false,
                     'message' => 'This User not exist!',
                 ]);
             }
