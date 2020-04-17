@@ -218,12 +218,19 @@ class RequestController extends Controller
     {
         try {
             $requests = $this->requestRepository->getRequestsByStatus($status);
-
-            return response()->json([
-                'results' => $requests,
-                'success' => true,
-                'message' => 'Get Request successfully',
-            ]);
+            if (count($requests) > 0) {
+                return response()->json([
+                    'results' => $requests,
+                    'success' => true,
+                    'message' => 'Get Request successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'results' => null,
+                    'success' => false,
+                    'message' => 'There are no matching requests!',
+                ]);
+            }
         } catch (\Exception $ex) {
             report($ex);
 
