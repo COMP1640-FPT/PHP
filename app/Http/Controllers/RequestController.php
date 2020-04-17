@@ -213,4 +213,32 @@ class RequestController extends Controller
             ]);
         }
     }
+
+    public function getRequestsByStatus($status)
+    {
+        try {
+            $requests = $this->requestRepository->getRequestsByStatus($status);
+            if (count($requests) > 0) {
+                return response()->json([
+                    'results' => $requests,
+                    'success' => true,
+                    'message' => 'Get Request successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'results' => null,
+                    'success' => false,
+                    'message' => 'There are no matching requests!',
+                ]);
+            }
+        } catch (\Exception $ex) {
+            report($ex);
+
+            return response()->json([
+                'results' => null,
+                'success' => false,
+                'message' => $ex,
+            ]);
+        }
+    }
 }
