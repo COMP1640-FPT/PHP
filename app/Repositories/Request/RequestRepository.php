@@ -20,5 +20,9 @@ class RequestRepository extends EloquentRepository implements RequestRepositoryI
     public function getRequestsByStudent($student)
     {
         return $this->model->where('student_id', $student)->orderBy('id', 'DESC')->get();
+
+    public function getRequestsByTutor($tutor)
+    {
+        return $this->model->where('tutor_id', $tutor)->get();
     }
 }
