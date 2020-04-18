@@ -44,4 +44,5 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::post('store-message', 'MessageController@storeMessage')->name('store.message');
     Route::get('status-requests/{status}', 'RequestController@getRequestsByStatus')->name('get.requests.by.status');
     Route::get('request-messages/{request}', 'MessageController@getMessagesByRequest')->name('get.messages.by.request');
+    Route::get('create-report', 'ReportController@createReport')->name('create.report');
 });
