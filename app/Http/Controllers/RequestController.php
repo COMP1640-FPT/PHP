@@ -164,15 +164,11 @@ class RequestController extends Controller
     public function getRequestsByTutor($id)
     {
         try {
-            $requests = [];
             $user = $this->userRepository->find($id);
             if ($user) {
                 if ($user->role === 'tutor') {
-                    if (count($user->rStudents) > 0) {
-                        foreach ($user->rStudents as $key => $student) {
-                            $requests[$key] = $student->pivot;
-                        }
-
+                    $requests = $this->requestRepository->getRequestsByTutor($id);
+                    if (count($requests) > 0) {
                         return response()->json([
                             'results' => $requests,
                             'success' => true,
