@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Request\RequestRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
-use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
     protected $userRepository;
+    protected $requestRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        RequestRepositoryInterface $requestRepository
+    ) {
         $this->userRepository = $userRepository;
+        $this->requestRepository = $requestRepository;
     }
 
     public function createReport()
@@ -47,6 +51,16 @@ class ReportController extends Controller
 
     public function averageNumberOfMessage()
     {
+        $requests = [];
+        $numberOfMessage = 0;
+        $tutorsId = $this->userRepository->getUserByRole('tutor')->pluck('id');
+        foreach ($tutorsId as $key => $tutorId) {
+            $requests[$key] = $this->requestRepository->getRequestsByTutor($tutorId);
+            foreach ($requests[$key] as $rq) {
+                $numberOfMessage += count($rq->messages);
+            }
+        }
+        return $numberOfMessage / count($tutorsId);
     }
 
     public function studentWithoutPersonalTutor()
