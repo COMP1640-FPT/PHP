@@ -14,6 +14,7 @@ class Request extends Model
         'status',
         'title',
         'description',
+        'room',
     ];
 
     public function senders()
