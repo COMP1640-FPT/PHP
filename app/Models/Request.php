@@ -21,4 +21,9 @@ class Request extends Model
         return $this->belongsToMany(User::class, 'messages', 'sender_id', 'request_id')
             ->withPivot('request_id', 'sender_id', 'content', 'file', 'created_at');
     }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }
