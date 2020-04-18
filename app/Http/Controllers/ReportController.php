@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Message;
 use App\Models\StudentTutor;
 use App\Repositories\Request\RequestRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
@@ -66,12 +68,35 @@ class ReportController extends Controller
 
     public function studentWithoutPersonalTutor()
     {
+        $students = [];
         $studentId = StudentTutor::pluck('student_id');
+        $studentsWithoutTutor = $this->userRepository->getStudentsNotAssigned($studentId);
+        foreach ($studentsWithoutTutor as $key => $studentWithoutTutor) {
+            $students[$key] = [
+                'name' => $studentWithoutTutor->name,
+                'code' => $studentWithoutTutor->code,
+            ];
+        }
 
-        return $this->userRepository->getStudentsNotAssigned($studentId)->pluck('name', 'code');
+        return $students;
     }
 
     public function studentsWithNoInteraction($day)
     {
+        $lastDay = Carbon::today()->subDays($day);
+        $noInteractStudents = [];
+        $students = $this->userRepository->getUserByRole('student');
+        foreach ($students as $key => $student) {
+            $messages = Message::where('sender_id', $student->id)->where('created_at', '>=', $lastDay)->get();
+            $requests = $this->requestRepository->getStudentsHaveMeeting($student->id, $lastDay);
+            if (count($messages) == 0 && count($requests) == 0) {
+                $noInteractStudents[$key] = [
+                    'name' => $student->name,
+                    'code' => $student->code,
+                ];
+            }
+        }
+
+        return $noInteractStudents;
     }
 }
