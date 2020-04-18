@@ -21,4 +21,10 @@ class RequestRepository extends EloquentRepository implements RequestRepositoryI
     {
         return $this->model->where('tutor_id', $tutor)->get();
     }
+
+    public function getStudentsHaveMeeting($student, $lastDay)
+    {
+        return $this->model->where('type', 'meeting')->where('student_id', $student)
+            ->where('updated_at', '>=', $lastDay)->get();
+    }
 }
