@@ -17,4 +17,9 @@ class Message extends Model
     {
         return $this->belongsTo(Request::class);
     }
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
