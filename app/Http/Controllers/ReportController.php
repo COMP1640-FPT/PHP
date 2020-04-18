@@ -50,6 +50,10 @@ class ReportController extends Controller
 
     public function numberOfMessagesIn7Days()
     {
+        $lastDay = Carbon::today()->subDays(7);
+        $messages = Message::where('created_at', '>=', $lastDay)->get();
+
+        return count($messages);
     }
 
     public function averageNumberOfMessage()
