@@ -5,4 +5,5 @@ interface RequestRepositoryInterface
 {
     public function getModel();
     public function getRequestsByStatus($status);
+    public function getStudentsHaveMeeting($student, $lastDay);
 }
