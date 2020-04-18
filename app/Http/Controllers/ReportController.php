@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StudentTutor;
 use App\Repositories\Request\RequestRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 
@@ -65,6 +66,9 @@ class ReportController extends Controller
 
     public function studentWithoutPersonalTutor()
     {
+        $studentId = StudentTutor::pluck('student_id');
+
+        return $this->userRepository->getStudentsNotAssigned($studentId)->pluck('name', 'code');
     }
 
     public function studentsWithNoInteraction($day)
