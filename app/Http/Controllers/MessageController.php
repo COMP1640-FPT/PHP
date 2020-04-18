@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Message;
 use App\Repositories\Request\RequestRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -62,26 +63,23 @@ class MessageController extends Controller
     public function getMessagesByRequest($id)
     {
         try {
-            $messages = [];
             $request = $this->requestRepository->find($id);
             if ($request) {
-                if (count($request->senders) > 0) {
-                    foreach ($request->senders as $key => $sender) {
-                        $dateTime = explode(' ', $sender->pivot->created_at);
-                        $messages[$key] = [
-                            'sender_name' => $sender->name,
-                            'sender_avatar' => $sender->avatar,
-                            'sender_id' => $sender->pivot->sender_id,
-                            'request_id' => $sender->pivot->request_id,
-                            'content' => $sender->pivot->content,
-                            'file' => $sender->pivot->file,
+                $messages = Message::where('request_id', $id)->get();
+                $msgs = $messages->toArray();
+                if (count($messages) > 0) {
+                    foreach ($messages as $key => $message) {
+                        $dateTime = explode(' ', $message->created_at);
+                        $msgs[$key] = array_merge($msgs[$key], [
+                            'sender_name' => $message->sender->name,
+                            'sender_avatar' => $message->sender->avatar,
                             'date' => $dateTime[0],
                             'time' => $dateTime[1],
-                        ];
+                        ]);
                     }
 
                     return response()->json([
-                        'results' => $messages,
+                        'results' => $msgs,
                         'success' => true,
                         'message' => 'Get messages successfully!',
                     ]);
