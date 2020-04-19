@@ -24,14 +24,19 @@ class MessageController extends Controller
                 $studentId = $request->student_id;
                 $tutorId = $request->tutor_id;
                 if ($rq->sender_id == $studentId || $rq->sender_id == $tutorId) {
-                    $request->senders()->attach($rq->sender_id, [
+                    $msg = Message::create([
+                        'request_id' => $rq->request_id,
+                        'sender_id' => $rq->sender_id,
                         'content' => $rq->content,
                         'file' => $rq->file,
-                        'created_at' => Carbon::now(),
                     ]);
-                    $lastMessage = $request->senders[count($request->senders) - 1];
+                    $message = array_merge($msg->toArray(), [
+                        'sender_name' => $msg->sender->name,
+                        'sender_avatar' => $msg->sender->avatar,
+                    ]);
+
                     return response()->json([
-                        'results' => $lastMessage,
+                        'results' => $message,
                         'success' => true,
                         'message' => 'Store message successfully!',
                     ]);
