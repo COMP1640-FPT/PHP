@@ -19,7 +19,7 @@ class Request extends Model
 
     public function senders()
     {
-        return $this->belongsToMany(User::class, 'messages', 'sender_id', 'request_id')
+        return $this->belongsToMany(User::class, 'messages', 'request_id', 'sender_id')
             ->withPivot('request_id', 'sender_id', 'content', 'file', 'created_at');
     }
 
