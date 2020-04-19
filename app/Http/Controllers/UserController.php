@@ -194,7 +194,7 @@ class UserController extends Controller
             $results = [];
             switch ($role) {
                 case 'student':
-                    $results['preCode'] = $this->majorRepository->getMajorCode()->toArray();
+                    $results['preCode'] = ['GCH', 'GBH'];
                     $matches = preg_replace('/[^0-9]/', '', $this->userRepository->getUserByRole($role)->first()->code);
                     $results['code'] = ($matches + 1);
                     break;
