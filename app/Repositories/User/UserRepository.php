@@ -36,4 +36,9 @@ class UserRepository extends EloquentRepository implements UserRepositoryInterfa
     {
         return $this->model->where('role', 'student')->whereNotIn('id', $id)->get();
     }
+
+    public function findStudentsById($id)
+    {
+        return $this->model->where('role', 'student')->whereIn('id', $id)->get();
+    }
 }

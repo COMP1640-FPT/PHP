@@ -14,4 +14,6 @@ interface UserRepositoryInterface
     public function getTutorByStudent($id);
 
     public function getStudentsNotAssigned(array $id);
+
+    public function findStudentsById(array $id);
 }
