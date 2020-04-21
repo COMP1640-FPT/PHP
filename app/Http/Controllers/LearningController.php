@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmailAssignStudent;
+use App\Jobs\SendEmailAssignTutor;
 use App\Models\StudentTutor;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
@@ -18,10 +20,29 @@ class LearningController extends Controller
     public function assignStudentsForTutor(Request $request)
     {
         try {
+            $attStudents = [];
+            $detStudents = [];
             $tutor = $this->userRepository->find($request->tutor);
-
             $sync = $tutor->students()->sync($request->student);
-
+            if ($sync['attached']) {
+                $attStudents = $this->userRepository->findStudentsById($sync['attached']);
+                $message = [
+                    'action' => 'allocated',
+                    'tutor' => $tutor->name,
+                ];
+                SendEmailAssignTutor::dispatch($message, $attStudents)->delay(now()->addMinute(1));
+            }
+            if ($sync['detached']) {
+                $detStudents = $this->userRepository->findStudentsById($sync['detached']);
+                $message = [
+                    'action' => 'unallocated',
+                    'tutor' => $tutor->name,
+                ];
+                SendEmailAssignTutor::dispatch($message, $detStudents)->delay(now()->addMinute(1));
+            }
+            if ($sync['attached'] || $sync['detached']) {
+                SendEmailAssignStudent::dispatch($attStudents, $detStudents, $tutor);
+            }
             return response()->json([
                 'results' => $tutor->students,
                 'success' => true,
