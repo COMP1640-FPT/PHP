@@ -60,7 +60,7 @@ class DashboardController extends Controller
             }
         } catch (\Exception $ex) {
             report($ex);
-            dd($ex);
+
             return response()->json([
                 'results' => null,
                 'success' => false,
@@ -72,6 +72,38 @@ class DashboardController extends Controller
     public function tutorDashboard($id)
     {
         try {
+            $user = $this->userRepository->find($id);
+            if ($user) {
+                if ($user->role === 'tutor') {
+                    $studentDashboard = [
+                        'totalRequests' => $this->requestRepository->getRequestsByTutor($id)->count(),
+                        'resolvedRequests' => $this->requestRepository->getRequestsByTutor($id)
+                            ->where('status', 'Resolved')->count(),
+                        'averageMessages' => $this->getMessagesByRequest($this->requestRepository
+                            ->getRequestsByTutor($id)->pluck('id')),
+                        'resolvedRequestsPerDay' => $this->getRequestsPerDay('Resolved', $id, 'tutor'),
+                        'processingRequestsPerDay' => $this->getRequestsPerDay('Not Resolve', $id, 'tutor'),
+                    ];
+
+                    return response()->json([
+                        'results' => $studentDashboard,
+                        'success' => true,
+                        'message' => 'Return successfully!',
+                    ]);
+                } else {
+                    return response()->json([
+                        'results' => null,
+                        'success' => false,
+                        'message' => 'This User is not Student!',
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'results' => null,
+                    'success' => false,
+                    'message' => 'This User not exist!',
+                ]);
+            }
         } catch (\Exception $ex) {
             report($ex);
 
@@ -114,8 +146,7 @@ class DashboardController extends Controller
     public function getMessagesByRequest($id)
     {
         $messages = Message::whereIn('request_id', $id)->get()->count();
-
-        return $messages / count($id);
+        return count($id) == 0 ? 0 : round($messages / count($id), 2, PHP_ROUND_HALF_EVEN);
     }
 
     public function getRequestsPerDay($status, $userId = null, $role = null)
