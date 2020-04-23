@@ -45,4 +45,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::get('status-requests/{status}', 'RequestController@getRequestsByStatus')->name('get.requests.by.status');
     Route::get('request-messages/{request}', 'MessageController@getMessagesByRequest')->name('get.messages.by.request');
     Route::get('create-report', 'ReportController@createReport')->name('create.report');
+    Route::get('student-dashboard/{student}', 'DashboardController@studentDashboard')->name('student.dashboard');
+    Route::get('tutor-dashboard/{tutor}', 'DashboardController@tutorDashboard')->name('tutor.dashboard');
+    Route::get('staff-dashboard', 'DashboardController@staffDashboard')->name('staff.dashboard');
+    Route::get('authorized-staff-dashboard', 'DashboardController@authorizedStaffDashboard')->name('authorized.staff.dashboard');
 });

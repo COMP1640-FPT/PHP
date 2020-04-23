@@ -32,4 +32,13 @@ class RequestRepository extends EloquentRepository implements RequestRepositoryI
         return $this->model->where('type', 'meeting')->where('student_id', $student)
             ->where('updated_at', '>=', $lastDay)->get();
     }
+
+    public function getRequestsByStatusPerDay($status, $date, $user = null, $row = null)
+    {
+        if ($row) {
+            return $this->model->where($row, $user)->where('status', $status)->whereDate('created_at', $date)->count();
+        } else {
+            return $this->model->where('status', $status)->whereDate('created_at', $date)->count();
+        }
+    }
 }
