@@ -48,5 +48,4 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::get('student-dashboard/{student}', 'DashboardController@studentDashboard')->name('student.dashboard');
     Route::get('tutor-dashboard/{tutor}', 'DashboardController@tutorDashboard')->name('tutor.dashboard');
     Route::get('staff-dashboard', 'DashboardController@staffDashboard')->name('staff.dashboard');
-    Route::get('authorized-staff-dashboard', 'DashboardController@authorizedStaffDashboard')->name('authorized.staff.dashboard');
 });

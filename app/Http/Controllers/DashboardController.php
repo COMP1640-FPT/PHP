@@ -118,20 +118,21 @@ class DashboardController extends Controller
     public function staffDashboard()
     {
         try {
-        } catch (\Exception $ex) {
-            report($ex);
+            $staffDashboard = [
+                'totalRequests' => $this->requestRepository->getAll()->count(),
+                'resolvedRequests' => $this->requestRepository->getRequestsByStatus('Resolved')->count(),
+                'averageMessages' => $this->getMessagesByRequest($this->requestRepository
+                    ->getAll()->pluck('id')),
+                'resolvedRequestsPerDay' => $this->getRequestsPerDay('Resolved'),
+                'processingRequestsPerDay' => $this->getRequestsPerDay('Not Resolve'),
+                'tutorRanking' => $this->getTutorRanking(),
+            ];
 
             return response()->json([
-                'results' => null,
-                'success' => false,
-                'message' => $ex,
+                'results' => $staffDashboard,
+                'success' => true,
+                'message' => 'Return successfully!',
             ]);
-        }
-    }
-
-    public function authorizedStaffDashboard()
-    {
-        try {
         } catch (\Exception $ex) {
             report($ex);
 
@@ -172,5 +173,28 @@ class DashboardController extends Controller
         }
 
         return $requests;
+    }
+
+    public function getTutorRanking()
+    {
+        $rates = [];
+        $tutors = $this->userRepository->getUserByRole('tutor');
+        foreach ($tutors as $key => $tutor) {
+            $point = 0;
+            $requests = $this->requestRepository
+                ->getRequestsByTutor($tutor->id)->pluck('rates')->toArray();
+            foreach ($requests as $request) {
+                $point += $request;
+            }
+            $rates[$key] = [
+                'tutor_id' => $tutor->id,
+                'tutor' => $tutor->name,
+                'numberOfStudent' => count($tutor->students),
+                'rates' => round($point / count($requests), 2, PHP_ROUND_HALF_EVEN),
+            ];
+        }
+        arsort($rates);
+
+        return $rates;
     }
 }
