@@ -14,7 +14,7 @@ class AlterTableRequestsAddColumnRoom extends Migration
     public function up()
     {
         Schema::table('requests', function (Blueprint $table) {
-            $table->string('room')->unique()->default(md5(rand()));
+            $table->string('room')->default(md5(rand()));
         });
     }
 
