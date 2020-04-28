@@ -15,7 +15,6 @@ class LearningSeeder extends Seeder
         $year = 2020;
         $month = 4;
         $day = rand(21, 28);
-        $date = \Carbon\Carbon::create($year, $month, $day, 0, 0, 0);
         $student_tutor = [];
         $requests = [];
         $messages = [];
@@ -24,7 +23,7 @@ class LearningSeeder extends Seeder
             array_push($student_tutor, [
                 "student_id" => $i,
                 "tutor_id" => rand(3, 7),
-                "created_at" => $date,
+                "created_at" => \Carbon\Carbon::create($year, $month, $day, 0, 0, 0),
             ]);
         }
         DB::table('student_tutor')->insert($student_tutor);
@@ -41,7 +40,7 @@ class LearningSeeder extends Seeder
                     "description" => $faker->sentence($nbWords = 6, $variableNbWords = true),
                     "room" => $faker->ean13,
                     "rates" => rand(3, 5),
-                    "created_at" => $date,
+                    "created_at" => \Carbon\Carbon::create($year, $month, $day, 0, 0, 0),
                 ]);
             }
         }
@@ -55,7 +54,7 @@ class LearningSeeder extends Seeder
                     "sender_id" => $sender[rand(0, 1)],
                     "content" => $faker->sentence($nbWords = 6, $variableNbWords = true),
                     "file" => null,
-                    "created_at" => $date,
+                    "created_at" => \Carbon\Carbon::create($year, $month, $day, 0, 0, 0),
                 ]);
             }
         }
