@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User 1</title>
-
+    <title>Student</title>
+    <base href="{{ asset('') }}">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
     <style>
         #video-container {
@@ -120,13 +120,13 @@
             <font font-family: sans serif size="3" style="color: #FFFFFF">Time: 00:05 </font><br />
         </div>
         <div class="col-6">
-            <font font-family: sans serif size="5" style="color: #FFFFFF">Name: TuanNT</font><br />
+            <font font-family: sans serif size="5" style="color: #FFFFFF">Name: Student</font><br />
             <div id="video-container">
                 <video id="remoteVideo" autoplay></video>
             </div>
         </div>
         <div class="col-6">
-            <font font-family: sans serif size="5" style="color: #FFFFFF">Name: HaiNH</font><br />
+            <font font-family: sans serif size="5" style="color: #FFFFFF">Name: Tutor</font><br />
             <div id="video-container">
                 <video id="localVideo" autoplay muted></video>
             </div>
