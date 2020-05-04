@@ -127,7 +127,6 @@ class DashboardController extends Controller
                 'processingRequestsPerDay' => $this->getRequestsPerDay('Not Resolve'),
                 'tutorRanking' => $this->getTutorRanking(),
             ];
-            dd($staffDashboard);
 
             return response()->json([
                 'results' => $staffDashboard,
@@ -195,6 +194,7 @@ class DashboardController extends Controller
             ];
         }
         arsort($rates);
+        $rates = array_values($rates);
 
         return $rates;
     }
