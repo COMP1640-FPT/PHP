@@ -127,6 +127,7 @@ class DashboardController extends Controller
                 'processingRequestsPerDay' => $this->getRequestsPerDay('Not Resolve'),
                 'tutorRanking' => $this->getTutorRanking(),
             ];
+            dd($staffDashboard);
 
             return response()->json([
                 'results' => $staffDashboard,
@@ -187,10 +188,10 @@ class DashboardController extends Controller
                 $point += $request;
             }
             $rates[$key] = [
+                'rates' => round($point / count($requests), 2, PHP_ROUND_HALF_EVEN),
                 'tutor_id' => $tutor->id,
                 'tutor' => $tutor->name,
                 'numberOfStudent' => count($tutor->students),
-                'rates' => round($point / count($requests), 2, PHP_ROUND_HALF_EVEN),
             ];
         }
         arsort($rates);
