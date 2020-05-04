@@ -67,6 +67,7 @@ class ReportController extends Controller
                 $numberOfMessage += count($rq->messages);
             }
         }
+
         return $numberOfMessage / count($tutorsId);
     }
 
@@ -81,6 +82,7 @@ class ReportController extends Controller
                 'code' => $studentWithoutTutor->code,
             ];
         }
+        $students = array_values($students);
 
         return $students;
     }
@@ -100,6 +102,7 @@ class ReportController extends Controller
                 ];
             }
         }
+        $noInteractStudents = array_values($noInteractStudents);
 
         return $noInteractStudents;
     }
